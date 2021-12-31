@@ -40,6 +40,13 @@ const typeDefs = gql(`
     images: [Image]
     release_date: String
     label: String
+    copyrights: [Copyrights]
+    availableMarkets: [String]
+  }
+
+  type Copyrights {
+    text: String
+    type: String
   }
 
   type Track {
@@ -61,7 +68,9 @@ const typeDefs = gql(`
   type Query {
     # Just returns "Hello world!"
     hi(message: String = "Hi"): String
-    fetchArtistById(id: String, name: String): Artist
+    fetchArtistById(id: String): Artist
+    fetchArtistByName(name: String): Artist
+    fetchArtistsByIds(ids: String): [Artist]
   }
 `)
 

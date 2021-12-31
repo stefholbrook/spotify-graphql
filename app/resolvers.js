@@ -66,7 +66,35 @@ const resolvers = {
       } catch (error) {
         throwExceptionOnError(error)
       }
-    }
+    },
+    fetchArtistByName: async (_, args) => {
+      try {
+        console.log(`debug: query artist ${JSON.stringify(args)} `)
+
+        const response = await fetch(`https://api.spotify.com/v1/search?q=${args.name}&type=artist`, {
+          headers: await haveHeadersWithAuthToken()
+        })
+        const data = await response.json()
+
+        return data.artists.items[0]
+      } catch (error) {
+        throwExceptionOnError(error)
+      }
+    },
+    fetchArtistsByIds: async (_, args) => {
+      try {
+        console.log(`debug: query artist ${JSON.stringify(args)} `)
+
+        const response = await fetch(`https://api.spotify.com/v1/artists?ids=${args.ids}`, {
+          headers: await haveHeadersWithAuthToken()
+        })
+        const data = await response.json()
+
+        return data.artists
+      } catch (error) {
+        throwExceptionOnError(error)
+      }
+    },
   },
   Artist: {
     albums: async (parent, args) => {
@@ -105,6 +133,30 @@ const resolvers = {
         const data = await response.json()
 
         return data.items
+      } catch (error) {
+        throwExceptionOnError(error)
+      }
+    },
+    copyrights: async (parent, args) => {
+      try {
+        const response = await fetch(`https://api.spotify.com/v1/albums/${parent.id}`, {
+          headers: await haveHeadersWithAuthToken()
+        })
+        const data = await response.json()
+
+        return data.copyrights
+      } catch (error) {
+        throwExceptionOnError(error)
+      }
+    },
+    availableMarkets: async (parent, args) => {
+      try {
+        const response = await fetch(`https://api.spotify.com/v1/albums/${parent.id}`, {
+          headers: await haveHeadersWithAuthToken()
+        })
+        const data = await response.json()
+
+        return data.available_markets
       } catch (error) {
         throwExceptionOnError(error)
       }
